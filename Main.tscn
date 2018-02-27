@@ -1,0 +1,65 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Char.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Images/sven.png" type="Texture" id=2]
+[ext_resource path="res://Images/kunkka.png" type="Texture" id=3]
+[ext_resource path="res://Images/bounty_hunter.png" type="Texture" id=4]
+[ext_resource path="res://Images/ember_spirit.png" type="Texture" id=5]
+[ext_resource path="res://Images/naga_siren.png" type="Texture" id=6]
+
+[node name="Node2D" type="Node2D" index="0"]
+
+[node name="Char" parent="." index="0" instance=ExtResource( 1 )]
+
+position = Vector2( 96, 64 )
+hp = 1200
+direction = 3
+attackRange = 80
+charType = 0
+
+[node name="Char2" parent="." index="1" instance=ExtResource( 1 )]
+
+position = Vector2( 96, 288 )
+texture = ExtResource( 2 )
+hp = 1500
+direction = 3
+attackRange = 80
+charType = 0
+
+[node name="Char3" parent="." index="2" instance=ExtResource( 1 )]
+
+position = Vector2( 96, 512 )
+texture = ExtResource( 3 )
+hp = 1100
+direction = 3
+attackRange = 80
+charType = 0
+
+[node name="Char4" parent="." index="3" instance=ExtResource( 1 )]
+
+position = Vector2( 928, 64 )
+texture = ExtResource( 4 )
+hp = 900
+attackRange = 80
+moveSpeed = 45
+charType = 0
+
+[node name="Char5" parent="." index="4" instance=ExtResource( 1 )]
+
+position = Vector2( 928, 288 )
+texture = ExtResource( 5 )
+hp = 1100
+attackRange = 100
+moveSpeed = 55
+charType = 0
+
+[node name="Char6" parent="." index="5" instance=ExtResource( 1 )]
+
+position = Vector2( 928, 512 )
+texture = ExtResource( 6 )
+hp = 1000
+attackRange = 100
+moveSpeed = 65
+charType = 0
+
+
