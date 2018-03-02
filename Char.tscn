@@ -34,6 +34,8 @@ direction = 0
 attackRange = 0
 moveSpeed = 50
 charType = 0
+damage = 0
+attackPerSecond = 0
 
 [node name="AttackRange" type="CollisionShape2D" parent="." index="0"]
 

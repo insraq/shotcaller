@@ -8,21 +8,31 @@ public class Char : Area2D
     [Export]
     private int hp;
     [Export]
-    private Direction direction;
+    public Direction direction;
     [Export]
     private int attackRange;
     [Export]
-    private int moveSpeed;
+    public int moveSpeed;
     [Export]
     private CharType charType;
+    [Export]
+    private int damage;
+    [Export]
+    private int attackPerSecond;
 
     private Sprite sprite;
     private Label label;
     private CharStatus charStatus;
+    private Vector2 initialPosition;
+    private int initialHp;
+    private float timeSinceLastAttack;
 
     public override void _Ready()
     {
         sprite = (Sprite)GetNode("./Sprite");
+        initialPosition = GetGlobalPosition();
+        initialHp = hp;
+
         if (texture != null)
         {
             sprite.SetTexture(texture);
@@ -35,23 +45,57 @@ public class Char : Area2D
         {
             GD.Print($"Please set moveSpeed for {GetName()}");
         }
+        if (damage == 0)
+        {
+            GD.Print($"Please set moveSpeed for {GetName()}");
+        }
+        if (attackPerSecond == 0)
+        {
+            GD.Print($"Please set moveSpeed for {GetName()}");
+        }
     }
 
     public override void _Process(float delta)
     {
         UpdateLabel();
 
+        if (hp <= 0)
+        {
+            if (charType == CharType.Hero)
+            {
+                // Respawn
+                hp = initialHp;
+                SetGlobalPosition(initialPosition);
+                return;
+            }
+            if (charType == CharType.Creep)
+            {
+                // Hide and kill
+                SetGlobalPosition(new Vector2(-1000, -1000));
+                QueueFree();
+            }
+
+        }
+
+        timeSinceLastAttack += delta;
+
         var charsInRange = GetOverlappingAreas();
         foreach (var c in charsInRange)
         {
-            if (c is Char @char)
+            if (c is Char enemy && enemy.direction != direction)
             {
-                var dist = @char.GetPosition().DistanceTo(GetPosition());
+                var dist = enemy.GetGlobalPosition().DistanceTo(GetGlobalPosition());
                 if (dist <= attackRange)
                 {
-                    // TODO: Implement the correct attack order
-                    if (@char.charType == CharType.Hero)
+                    if (timeSinceLastAttack <= (1 / (float)attackPerSecond))
                     {
+                        return;
+                    }
+                    // TODO: Implement the correct attack order, currently it will randomly attack some char
+                    if (enemy.charType == CharType.Hero || enemy.charType == CharType.Creep)
+                    {
+                        enemy.hp -= damage;
+                        timeSinceLastAttack = 0;
                         charStatus = CharStatus.AttackHero;
                         return;
                     }
@@ -60,7 +104,7 @@ public class Char : Area2D
         }
 
         int dir = direction == Direction.Left ? -1 : 1;
-        SetPosition(GetPosition() + new Vector2(dir * moveSpeed * delta, 0));
+        SetGlobalPosition(GetGlobalPosition() + new Vector2(dir * moveSpeed * delta, 0));
         charStatus = CharStatus.Move;
     }
 
@@ -70,17 +114,17 @@ public class Char : Area2D
         label.SetText($"HP: {hp}\nSpd/Rng: {moveSpeed}/{attackRange}\nSts: {charStatus}");
     }
 
-    enum Direction
+    public enum Direction
     {
         Left, Right
     }
 
-    enum CharStatus
+    public enum CharStatus
     {
         AttackHero, AttackBuilding, AttackCreep, Move
     }
 
-    enum CharType
+    public enum CharType
     {
         Hero, Creep
     }
