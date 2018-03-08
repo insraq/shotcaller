@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq;
 
 public class Char : Area2D
 {
@@ -80,26 +81,27 @@ public class Char : Area2D
         timeSinceLastAttack += delta;
 
         var charsInRange = GetOverlappingAreas();
-        foreach (var c in charsInRange)
+
+        var sorted = charsInRange
+            .OfType<Char>()
+            .Where(c => c.direction != direction)
+            .OrderBy(c => c.charType == CharType.Hero ? 0 : 1)
+            .ToList();
+
+        if (sorted.Count > 0)
         {
-            if (c is Char enemy && enemy.direction != direction)
+            var enemy = sorted[0];
+            var dist = enemy.GetGlobalPosition().DistanceTo(GetGlobalPosition());
+            if (dist <= attackRange)
             {
-                var dist = enemy.GetGlobalPosition().DistanceTo(GetGlobalPosition());
-                if (dist <= attackRange)
+                if (timeSinceLastAttack <= (1 / (float)attackPerSecond))
                 {
-                    if (timeSinceLastAttack <= (1 / (float)attackPerSecond))
-                    {
-                        return;
-                    }
-                    // TODO: Implement the correct attack order, currently it will randomly attack some char
-                    if (enemy.charType == CharType.Hero || enemy.charType == CharType.Creep)
-                    {
-                        enemy.hp -= damage;
-                        timeSinceLastAttack = 0;
-                        charStatus = CharStatus.AttackHero;
-                        return;
-                    }
+                    return;
                 }
+                enemy.hp -= damage;
+                timeSinceLastAttack = 0;
+                charStatus = enemy.charType == CharType.Hero ? CharStatus.AttackHero : CharStatus.AttackCreep;
+                return;
             }
         }
 
