@@ -5,6 +5,8 @@ public class CreepSpawner : Node2D
 {
     [Export]
     private Char.Direction direction;
+    [Export]
+    private Texture texture;
     private PackedScene creep;
 
     public override void _Ready()
@@ -14,8 +16,14 @@ public class CreepSpawner : Node2D
 
     private void SpawnCreep()
     {
+        AddChild(CreateCreep());
+    }
+
+    private Char CreateCreep()
+    {
         var newCreep = (Char)creep.Instance();
         newCreep.direction = direction;
-        AddChild(newCreep);
+        newCreep.texture = texture;
+        return newCreep;
     }
 }

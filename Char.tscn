@@ -1,23 +1,14 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Char.cs" type="Script" id=1]
-[ext_resource path="res://Images/earthshaker.png" type="Texture" id=2]
-[ext_resource path="res://Fonts/ProggySmall.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Images/buffalo.png" type="Texture" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
 
 custom_solver_bias = 0.0
 radius = 80.0
 
-[sub_resource type="DynamicFont" id=2]
-
-size = 16
-use_mipmaps = false
-use_filter = false
-font_data = ExtResource( 3 )
-_sections_unfolded = [ "Font", "Settings" ]
-
-[node name="Char" type="Area2D"]
+[node name="Char" type="Area2D" index="0"]
 
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
@@ -47,30 +38,30 @@ scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 2 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="HP" type="Label" parent="." index="2"]
+[node name="HP" type="ProgressBar" parent="." index="2"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = -60.0
-margin_top = -32.0
-margin_right = 60.0
-margin_bottom = 32.0
+margin_left = -32.0
+margin_top = 32.0
+margin_right = 32.0
+margin_bottom = 48.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
-mouse_filter = 2
+mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
-size_flags_vertical = 4
-custom_fonts/font = SubResource( 2 )
-text = "HP: 1200
-Range: 80
-Status: Attack"
-valign = 2
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Anchor", "Focus", "Grow Direction", "Hint", "Margin", "Mouse", "Rect", "Size Flags", "Theme", "Visibility", "custom_colors", "custom_constants", "custom_fonts", "custom_styles" ]
+size_flags_vertical = 0
+min_value = 0.0
+max_value = 100.0
+step = 1.0
+page = 0.0
+value = 100.0
+exp_edit = false
+rounded = false
+percent_visible = false
+_sections_unfolded = [ "Percent" ]
 
 

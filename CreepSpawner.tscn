@@ -10,7 +10,7 @@ direction = 0
 [node name="Timer" type="Timer" parent="." index="0"]
 
 process_mode = 1
-wait_time = 5.0
+wait_time = 10.0
 one_shot = false
 autostart = true
 

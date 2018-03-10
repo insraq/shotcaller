@@ -5,7 +5,7 @@ using System.Linq;
 public class Char : Area2D
 {
     [Export]
-    private Texture texture;
+    public Texture texture;
     [Export]
     private int hp;
     [Export]
@@ -22,6 +22,7 @@ public class Char : Area2D
     private int attackPerSecond;
 
     private Sprite sprite;
+    private ProgressBar progressBar;
     private Label label;
     private CharStatus charStatus;
     private Vector2 initialPosition;
@@ -31,6 +32,7 @@ public class Char : Area2D
     public override void _Ready()
     {
         sprite = (Sprite)GetNode("./Sprite");
+        progressBar = (ProgressBar)GetNode("./HP");
         initialPosition = GetGlobalPosition();
         initialHp = hp;
 
@@ -58,7 +60,7 @@ public class Char : Area2D
 
     public override void _Process(float delta)
     {
-        UpdateLabel();
+        UpdateView();
 
         if (hp <= 0)
         {
@@ -110,10 +112,9 @@ public class Char : Area2D
         charStatus = CharStatus.Move;
     }
 
-    private void UpdateLabel()
+    private void UpdateView()
     {
-        label = (Label)GetNode("./HP");
-        label.SetText($"HP: {hp}\nSpd/Rng: {moveSpeed}/{attackRange}\nSts: {charStatus}");
+        progressBar.SetValue((float)100 * hp / initialHp);
     }
 
     public enum Direction
