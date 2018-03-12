@@ -43,8 +43,9 @@ public class Char : Area2D
         if (attackRange == 0)
         {
             GD.Print($"Please set attackRange for {GetName()}");
+            ((CircleShape2D)((CollisionShape2D)GetNode("./AttackRange")).Shape).Radius = attackRange;
         }
-        if (moveSpeed == 0)
+        if (moveSpeed == 0 && charType != CharType.Tower)
         {
             GD.Print($"Please set moveSpeed for {GetName()}");
         }
@@ -60,6 +61,7 @@ public class Char : Area2D
 
     public override void _Process(float delta)
     {
+
         UpdateView();
 
         if (hp <= 0)

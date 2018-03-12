@@ -1,9 +1,9 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Main.cs" type="Script" id=1]
 [ext_resource path="res://Char.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Images/giraffe.png" type="Texture" id=3]
-[ext_resource path="res://Images/penguin.png" type="Texture" id=4]
+[ext_resource path="res://Images/pig.png" type="Texture" id=3]
+[ext_resource path="res://Images/panda.png" type="Texture" id=4]
 [ext_resource path="res://Images/parrot.png" type="Texture" id=5]
 [ext_resource path="res://Images/narwhal.png" type="Texture" id=6]
 [ext_resource path="res://Images/owl.png" type="Texture" id=7]
@@ -11,6 +11,7 @@
 [ext_resource path="res://Images/chick.png" type="Texture" id=9]
 [ext_resource path="res://Images/hippo.png" type="Texture" id=10]
 [ext_resource path="res://Tower.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Images/foliageTree_04.png" type="Texture" id=12]
 
 [node name="Node2D" type="Node2D" index="0"]
 
@@ -27,23 +28,22 @@ attackPerSecond = 2
 
 [node name="Char2" parent="." index="1" instance=ExtResource( 2 )]
 
-position = Vector2( 96, 288 )
+position = Vector2( 96, 512 )
 texture = ExtResource( 3 )
-hp = 1500
-direction = 3
-attackRange = 80
-damage = 55
-attackPerSecond = 2
+hp = 1200
+direction = 1
+attackRange = 70
+damage = 25
+attackPerSecond = 4
 
 [node name="Char3" parent="." index="2" instance=ExtResource( 2 )]
 
-position = Vector2( 96, 512 )
+position = Vector2( 96, 288 )
 texture = ExtResource( 4 )
-hp = 1100
-direction = 3
+hp = 1500
+direction = 1
 attackRange = 80
-damage = 25
-attackPerSecond = 5
+damage = 20
 
 [node name="Char4" parent="." index="3" instance=ExtResource( 2 )]
 
@@ -81,18 +81,61 @@ position = Vector2( 96, 64 )
 direction = 1
 texture = ExtResource( 9 )
 
-[node name="CreepSpawner2" parent="." index="7" instance=ExtResource( 8 )]
+[node name="CreepSpawner3" parent="." index="7" instance=ExtResource( 8 )]
+
+position = Vector2( 96, 288 )
+direction = 1
+texture = ExtResource( 9 )
+
+[node name="CreepSpawner4" parent="." index="8" instance=ExtResource( 8 )]
+
+position = Vector2( 96, 512 )
+direction = 1
+texture = ExtResource( 9 )
+
+[node name="CreepSpawner2" parent="." index="9" instance=ExtResource( 8 )]
 
 position = Vector2( 928, 64 )
 texture = ExtResource( 10 )
 
-[node name="Tower1" parent="." index="8" instance=ExtResource( 11 )]
+[node name="CreepSpawner5" parent="." index="10" instance=ExtResource( 8 )]
+
+position = Vector2( 928, 288 )
+texture = ExtResource( 10 )
+
+[node name="CreepSpawner6" parent="." index="11" instance=ExtResource( 8 )]
+
+position = Vector2( 928, 512 )
+texture = ExtResource( 10 )
+
+[node name="Tower1" parent="." index="12" instance=ExtResource( 11 )]
 
 position = Vector2( 320, 64 )
 direction = 1
 
-[node name="Tower2" parent="." index="9" instance=ExtResource( 11 )]
+[node name="Tower2" parent="." index="13" instance=ExtResource( 11 )]
+
+position = Vector2( 320, 288 )
+direction = 1
+
+[node name="Tower3" parent="." index="14" instance=ExtResource( 11 )]
+
+position = Vector2( 704, 512 )
+texture = ExtResource( 12 )
+
+[node name="Tower4" parent="." index="15" instance=ExtResource( 11 )]
 
 position = Vector2( 704, 64 )
+texture = ExtResource( 12 )
+
+[node name="Tower5" parent="." index="16" instance=ExtResource( 11 )]
+
+position = Vector2( 704, 288 )
+texture = ExtResource( 12 )
+
+[node name="Tower7" parent="." index="17" instance=ExtResource( 11 )]
+
+position = Vector2( 320, 512 )
+direction = 1
 
 
