@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Main.cs" type="Script" id=1]
 [ext_resource path="res://Char.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://CreepSpawner.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Images/chick.png" type="Texture" id=9]
 [ext_resource path="res://Images/hippo.png" type="Texture" id=10]
+[ext_resource path="res://Tower.tscn" type="PackedScene" id=11]
 
 [node name="Node2D" type="Node2D" index="0"]
 
@@ -84,5 +85,14 @@ texture = ExtResource( 9 )
 
 position = Vector2( 928, 64 )
 texture = ExtResource( 10 )
+
+[node name="Tower1" parent="." index="8" instance=ExtResource( 11 )]
+
+position = Vector2( 320, 64 )
+direction = 1
+
+[node name="Tower2" parent="." index="9" instance=ExtResource( 11 )]
+
+position = Vector2( 704, 64 )
 
 

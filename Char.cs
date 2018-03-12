@@ -71,7 +71,7 @@ public class Char : Area2D
                 SetGlobalPosition(initialPosition);
                 return;
             }
-            if (charType == CharType.Creep)
+            else // For Creep and Tower
             {
                 // Hide and kill
                 SetGlobalPosition(new Vector2(-1000, -1000));
@@ -87,7 +87,7 @@ public class Char : Area2D
         var sorted = charsInRange
             .OfType<Char>()
             .Where(c => c.direction != direction)
-            .OrderBy(c => c.charType == CharType.Hero ? 0 : 1)
+            .OrderBy(c => c.charType.AttackOrder())
             .ToList();
 
         if (sorted.Count > 0)
@@ -102,11 +102,20 @@ public class Char : Area2D
                 }
                 enemy.hp -= damage;
                 timeSinceLastAttack = 0;
-                charStatus = enemy.charType == CharType.Hero ? CharStatus.AttackHero : CharStatus.AttackCreep;
+                charStatus = enemy.charType.ToCharStatus();
+                // When attack, skip moving
                 return;
             }
         }
 
+        if (charType != CharType.Tower)
+        {
+            Move(delta);
+        }
+    }
+
+    private void Move(float delta)
+    {
         int dir = direction == Direction.Left ? -1 : 1;
         SetGlobalPosition(GetGlobalPosition() + new Vector2(dir * moveSpeed * delta, 0));
         charStatus = CharStatus.Move;
@@ -124,11 +133,45 @@ public class Char : Area2D
 
     public enum CharStatus
     {
-        AttackHero, AttackBuilding, AttackCreep, Move
+        AttackHero, AttackTower, AttackCreep, Move
     }
 
     public enum CharType
     {
-        Hero, Creep
+        Hero, Creep, Tower
+    }
+}
+
+public static class Extensions
+{
+    public static Char.CharStatus ToCharStatus(this Char.CharType charType)
+    {
+        switch (charType)
+        {
+            case Char.CharType.Hero:
+                return Char.CharStatus.AttackHero;
+            case Char.CharType.Creep:
+                return Char.CharStatus.AttackCreep;
+            case Char.CharType.Tower:
+                return Char.CharStatus.AttackTower;
+            default:
+                return Char.CharStatus.Move;
+        }
+    }
+
+    // Smaller means higher priority
+    public static int AttackOrder(this Char.CharType charType)
+    {
+        switch (charType)
+        {
+            case Char.CharType.Hero:
+                return 0;
+            case Char.CharType.Creep:
+                return 1;
+            case Char.CharType.Tower:
+                return 2;
+            default:
+                return 999;
+        }
     }
 }

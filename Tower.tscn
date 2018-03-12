@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Char.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Images/foliageTree_01.png" type="Texture" id=2]
+
+[node name="Char" instance=ExtResource( 1 )]
+
+texture = ExtResource( 2 )
+hp = 3000
+attackRange = 100
+moveSpeed = 0
+charType = 2
+damage = 50
+attackPerSecond = 2
+
+[node name="Sprite" parent="." index="1"]
+
+texture = ExtResource( 2 )
+
+
