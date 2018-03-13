@@ -13,7 +13,7 @@
 [ext_resource path="res://Tower.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Images/foliageTree_04.png" type="Texture" id=12]
 
-[node name="Node2D" type="Node2D" index="0"]
+[node name="Node2D" type="Node2D"]
 
 script = ExtResource( 1 )
 
@@ -39,11 +39,13 @@ attackPerSecond = 4
 [node name="Char3" parent="." index="2" instance=ExtResource( 2 )]
 
 position = Vector2( 96, 288 )
+_sections_unfolded = [ "Animation", "Collision", "Material", "Offset", "Region", "Transform", "Visibility", "Z Index" ]
 texture = ExtResource( 4 )
 hp = 1500
 direction = 1
 attackRange = 80
 damage = 20
+attackPerSecond = 5
 
 [node name="Char4" parent="." index="3" instance=ExtResource( 2 )]
 

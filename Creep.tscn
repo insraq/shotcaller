@@ -8,6 +8,7 @@
 texture = ExtResource( 2 )
 hp = 300
 attackRange = 50
+moveSpeed = 25
 charType = 1
 damage = 20
 attackPerSecond = 2
