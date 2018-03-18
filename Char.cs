@@ -1,4 +1,4 @@
-using Godot;
+﻿using Godot;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,6 +22,8 @@ public class Char : Area2D
     private int attackPerSecond;
 
     private Sprite sprite;
+    private Sprite selectedSprite;
+    public bool selected;
     private ProgressBar progressBar;
     private Label label;
     private CharStatus charStatus;
@@ -31,10 +33,13 @@ public class Char : Area2D
     private float timeSinceLastDeath;
     private Char attackTarget;
     private HashSet<Char> targets;
+    private const int BoundingBoxIndex = 1;
+    private const int RespawnTime = 5;
 
     public override void _Ready()
     {
         sprite = (Sprite)GetNode("./Sprite");
+        selectedSprite = (Sprite)GetNode("./Selected");
         progressBar = (ProgressBar)GetNode("./HP");
         initialPosition = GetGlobalPosition();
         timeSinceLastDeath = 5;
@@ -44,6 +49,7 @@ public class Char : Area2D
         if (texture != null)
         {
             sprite.SetTexture(texture);
+            selectedSprite.SetTexture(texture);
         }
         if (attackRange == 0)
         {
@@ -82,12 +88,11 @@ public class Char : Area2D
         }
     }
 
-
     private void LookForAndSetPotentialAttackTarget()
     {
         var sorted = targets
             .OfType<Char>()
-            .Where(c => c.direction != direction && c.hp > 0) // We need hp > 0 because GetOverlappingAreas will include the exiting area
+            .Where(c => c.direction != direction && c.hp > 0)
             .OrderBy(c => c.charType.AttackOrder())
             .ThenBy(c => c.hp)
             .ToList();
@@ -102,15 +107,57 @@ public class Char : Area2D
         }
     }
 
-    private void OnInputEvent(Object viewport, Object e, int shape_idx)
+    private void OnInputEvent(Object viewport, Object e, int shapeIdx)
     {
-        if (e is InputEvent ev)
+        if (e is InputEvent ev && ev.IsActionPressed("select") && shapeIdx == BoundingBoxIndex)
         {
-            if (ev.IsActionPressed("select"))
+            switch (charType)
             {
-                GD.Print(shape_idx);
+                case CharType.Hero:
+                    if (timeSinceLastDeath < RespawnTime)
+                    {
+                        return;
+                    }
+                    if (selected)
+                    {
+                        Unselect();
+                    }
+                    else
+                    {
+                        Select();
+                    }
+                    return;
+                case CharType.Creep:
+                    return;
+                case CharType.Tower:
+                    var selections = GetTree().GetNodesInGroup("HeroSelection").OfType<Char>().Where(c => c.selected);
+                    if (selections.Count() == 1)
+                    {
+                        Char currentSelected = selections.First();
+                        currentSelected.timeSinceLastDeath = 0;
+                        currentSelected.hp = currentSelected.initialHp;
+                        currentSelected.Unselect();
+                        currentSelected.SetGlobalPosition(GetGlobalPosition());
+                    }
+                    return;
+                default:
+                    return;
             }
+
         }
+    }
+
+    private void Unselect()
+    {
+        selectedSprite.Visible = false;
+        selected = false;
+    }
+
+    private void Select()
+    {
+        GetTree().CallGroupFlags((int)SceneTree.GroupCallFlags.Realtime, "HeroSelection", "Unselect");
+        selectedSprite.Visible = true;
+        selected = true;
     }
 
     public override void _Process(float delta)
@@ -126,6 +173,7 @@ public class Char : Area2D
                 // Respawn
                 timeSinceLastDeath = 0;
                 hp = initialHp;
+                Unselect();
                 SetGlobalPosition(initialPosition);
                 return;
             }
@@ -139,9 +187,9 @@ public class Char : Area2D
 
         }
 
-        if (timeSinceLastDeath < 5)
+        if (timeSinceLastDeath < RespawnTime)
         {
-            Modulate = new Color(1, 1, 1, 0.2f + 0.8f * timeSinceLastDeath / 5);
+            Modulate = new Color(1, 1, 1, 0.2f + 0.8f * timeSinceLastDeath / RespawnTime);
             return;
         }
         else
@@ -183,10 +231,6 @@ public class Char : Area2D
     {
         progressBar.SetValue((float)100 * hp / initialHp);
     }
-
-
-
-
 
 }
 

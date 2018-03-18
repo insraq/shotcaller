@@ -13,7 +13,7 @@ radius = 80.0
 custom_solver_bias = 0.0
 radius = 50.0
 
-[node name="Char" type="Area2D" index="0"]
+[node name="Char" type="Area2D"]
 
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
@@ -41,13 +41,21 @@ shape = SubResource( 1 )
 
 shape = SubResource( 2 )
 
-[node name="Sprite" type="Sprite" parent="." index="2"]
+[node name="Selected" type="Sprite" parent="." index="2"]
+
+visible = false
+modulate = Color( 0, 0, 0, 0.392157 )
+scale = Vector2( 0.6, 0.6 )
+texture = ExtResource( 2 )
+_sections_unfolded = [ "Material", "Transform", "Visibility" ]
+
+[node name="Sprite" type="Sprite" parent="." index="3"]
 
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 2 )
 _sections_unfolded = [ "Material", "Transform", "Visibility" ]
 
-[node name="HP" type="ProgressBar" parent="." index="3"]
+[node name="HP" type="ProgressBar" parent="." index="4"]
 
 anchor_left = 0.0
 anchor_top = 0.0
