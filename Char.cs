@@ -1,4 +1,5 @@
 using Godot;
+using System.Collections.Generic;
 using System.Linq;
 
 public class Char : Area2D
@@ -29,6 +30,7 @@ public class Char : Area2D
     private float timeSinceLastAttack;
     private float timeSinceLastDeath;
     private Char attackTarget;
+    private HashSet<Char> targets;
 
     public override void _Ready()
     {
@@ -37,6 +39,7 @@ public class Char : Area2D
         initialPosition = GetGlobalPosition();
         timeSinceLastDeath = 5;
         initialHp = hp;
+        targets = new HashSet<Char>();
 
         if (texture != null)
         {
@@ -63,21 +66,26 @@ public class Char : Area2D
 
     private void OnAreaEntered(Object area)
     {
-        LookForAndSetPotentialAttackTarget();
+        if (area is Char c)
+        {
+            targets.Add(c);
+            LookForAndSetPotentialAttackTarget();
+        }
     }
 
     private void OnAreaExited(Object area)
     {
-        var character = (Char)area;
-        LookForAndSetPotentialAttackTarget();
+        if (area is Char c)
+        {
+            targets.Remove(c);
+            LookForAndSetPotentialAttackTarget();
+        }
     }
 
 
     private void LookForAndSetPotentialAttackTarget()
     {
-        var charsInRange = GetOverlappingAreas();
-
-        var sorted = charsInRange
+        var sorted = targets
             .OfType<Char>()
             .Where(c => c.direction != direction && c.hp > 0) // We need hp > 0 because GetOverlappingAreas will include the exiting area
             .OrderBy(c => c.charType.AttackOrder())
@@ -91,6 +99,17 @@ public class Char : Area2D
         else
         {
             attackTarget = null;
+        }
+    }
+
+    private void OnInputEvent(Object viewport, Object e, int shape_idx)
+    {
+        if (e is InputEvent ev)
+        {
+            if (ev.IsActionPressed("select"))
+            {
+                GD.Print(shape_idx);
+            }
         }
     }
 
@@ -165,49 +184,39 @@ public class Char : Area2D
         progressBar.SetValue((float)100 * hp / initialHp);
     }
 
-    public enum Direction
-    {
-        Left, Right
-    }
 
-    public enum CharStatus
-    {
-        AttackHero, AttackTower, AttackCreep, Move
-    }
 
-    public enum CharType
-    {
-        Hero, Creep, Tower
-    }
+
+
 }
 
 public static class Extensions
 {
-    public static Char.CharStatus ToCharStatus(this Char.CharType charType)
+    public static CharStatus ToCharStatus(this CharType charType)
     {
         switch (charType)
         {
-            case Char.CharType.Hero:
-                return Char.CharStatus.AttackHero;
-            case Char.CharType.Creep:
-                return Char.CharStatus.AttackCreep;
-            case Char.CharType.Tower:
-                return Char.CharStatus.AttackTower;
+            case CharType.Hero:
+                return CharStatus.AttackHero;
+            case CharType.Creep:
+                return CharStatus.AttackCreep;
+            case CharType.Tower:
+                return CharStatus.AttackTower;
             default:
-                return Char.CharStatus.Move;
+                return CharStatus.Move;
         }
     }
 
     // Smaller means higher priority
-    public static int AttackOrder(this Char.CharType charType)
+    public static int AttackOrder(this CharType charType)
     {
         switch (charType)
         {
-            case Char.CharType.Hero:
+            case CharType.Hero:
                 return 0;
-            case Char.CharType.Creep:
+            case CharType.Creep:
                 return 1;
-            case Char.CharType.Tower:
+            case CharType.Tower:
                 return 2;
             default:
                 return 999;

@@ -50,7 +50,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Char.cs" />
+    <Compile Include="CharStatus.cs" />
     <Compile Include="CreepSpawner.cs" />
+    <Compile Include="CharType.cs" />
+    <Compile Include="Direction.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

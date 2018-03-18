@@ -4,7 +4,7 @@ using System;
 public class CreepSpawner : Node2D
 {
     [Export]
-    private Char.Direction direction;
+    private Direction direction;
     [Export]
     private Texture texture;
     private PackedScene creep;
