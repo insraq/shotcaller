@@ -35,15 +35,33 @@ public class Char : Area2D
     private HashSet<Char> targets;
     private const int BoundingBoxIndex = 1;
     private const int RespawnTime = 5;
+    private AnimationPlayer damageAnimation;
+    private Label damageAnimationLabel;
+
+    public int Hp
+    {
+        get => hp;
+        set
+        {
+            if (value < hp && !damageAnimation.IsPlaying())
+            {
+                damageAnimationLabel.Text = (value - hp).ToString();
+                damageAnimation.Play("Damage");
+            }
+            hp = value;
+        }
+    }
 
     public override void _Ready()
     {
         sprite = (Sprite)GetNode("./Sprite");
         selectedSprite = (Sprite)GetNode("./Selected");
         progressBar = (ProgressBar)GetNode("./HP");
+        damageAnimation = (AnimationPlayer)GetNode("./DamageAnimation");
+        damageAnimationLabel = (Label)GetNode("./Damage");
         initialPosition = GetGlobalPosition();
         timeSinceLastDeath = 5;
-        initialHp = hp;
+        initialHp = Hp;
         targets = new HashSet<Char>();
 
         if (texture != null)
@@ -92,9 +110,9 @@ public class Char : Area2D
     {
         var sorted = targets
             .OfType<Char>()
-            .Where(c => c.direction != direction && c.hp > 0)
+            .Where(c => c.direction != direction && c.Hp > 0)
             .OrderBy(c => c.charType.AttackOrder())
-            .ThenBy(c => c.hp)
+            .ThenBy(c => c.Hp)
             .ToList();
 
         if (sorted.Count > 0)
@@ -137,7 +155,7 @@ public class Char : Area2D
                         if (currentSelected.direction == direction)
                         {
                             currentSelected.timeSinceLastDeath = 0;
-                            currentSelected.hp = currentSelected.initialHp;
+                            currentSelected.Hp = currentSelected.initialHp;
                             currentSelected.Unselect();
                             currentSelected.SetGlobalPosition(GetGlobalPosition());
                         }
@@ -169,13 +187,13 @@ public class Char : Area2D
         timeSinceLastDeath += delta;
         UpdateView();
 
-        if (hp <= 0)
+        if (Hp <= 0)
         {
             if (charType == CharType.Hero)
             {
                 // Respawn
                 timeSinceLastDeath = 0;
-                hp = initialHp;
+                Hp = initialHp;
                 Unselect();
                 SetGlobalPosition(initialPosition);
                 return;
@@ -209,7 +227,7 @@ public class Char : Area2D
                 {
                     return;
                 }
-                attackTarget.hp -= damage;
+                attackTarget.Hp -= damage;
                 timeSinceLastAttack = 0;
                 charStatus = attackTarget.charType.ToCharStatus();
                 // When attack, skip moving
@@ -232,7 +250,7 @@ public class Char : Area2D
 
     private void UpdateView()
     {
-        progressBar.SetValue((float)100 * hp / initialHp);
+        progressBar.SetValue((float)100 * Hp / initialHp);
     }
 
 }
