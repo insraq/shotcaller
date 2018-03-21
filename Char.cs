@@ -134,10 +134,13 @@ public class Char : Area2D
                     if (selections.Count() == 1)
                     {
                         Char currentSelected = selections.First();
-                        currentSelected.timeSinceLastDeath = 0;
-                        currentSelected.hp = currentSelected.initialHp;
-                        currentSelected.Unselect();
-                        currentSelected.SetGlobalPosition(GetGlobalPosition());
+                        if (currentSelected.direction == direction)
+                        {
+                            currentSelected.timeSinceLastDeath = 0;
+                            currentSelected.hp = currentSelected.initialHp;
+                            currentSelected.Unselect();
+                            currentSelected.SetGlobalPosition(GetGlobalPosition());
+                        }
                     }
                     return;
                 default:
