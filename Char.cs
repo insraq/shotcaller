@@ -120,18 +120,9 @@ public class Char : Area2D
             switch (charType)
             {
                 case CharType.Hero:
-                    if (timeSinceLastDeath < RespawnTime)
-                    {
-                        return;
-                    }
-                    if (selected)
-                    {
-                        Unselect();
-                    }
-                    else
-                    {
-                        Select();
-                    }
+                    if (timeSinceLastDeath < RespawnTime) { return; }
+                    if (selected) { Unselect(); }
+                    else { Select(); }
                     return;
                 case CharType.Creep:
                     return;
