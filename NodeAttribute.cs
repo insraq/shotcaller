@@ -2,11 +2,11 @@
 using System;
 
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-public class GetNodeAttribute : Attribute
+public class NodeAttribute : Attribute
 {
     public string nodePath;
 
-    public GetNodeAttribute(string np)
+    public NodeAttribute(string np)
     {
         nodePath = np;
     }

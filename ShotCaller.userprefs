@@ -1,7 +1,7 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Char.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="NodeAttribute.cs">
     <Files>
-      <File FileName="Char.cs" Line="125" Column="25" />
+      <File FileName="NodeAttribute.cs" Line="13" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

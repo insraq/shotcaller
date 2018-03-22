@@ -53,9 +53,12 @@
     <Compile Include="CharStatus.cs" />
     <Compile Include="CreepSpawner.cs" />
     <Compile Include="CharType.cs" />
+    <Compile Include="Damage.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="NodeAttribute.cs" />
+    <Compile Include="Extensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,11 +7,10 @@ public class CreepSpawner : Node2D
     private Direction direction;
     [Export]
     private Texture texture;
-    private PackedScene creep;
+    private PackedScene creep = (PackedScene)GD.Load("res://Creep.tscn");
 
     public override void _Ready()
     {
-        creep = (PackedScene)GD.Load("res://Creep.tscn");
     }
 
     private void SpawnCreep()

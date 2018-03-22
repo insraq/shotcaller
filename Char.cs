@@ -4,27 +4,18 @@ using System.Linq;
 
 public class Char : Area2D
 {
-    [Export]
-    public Texture texture;
-    [Export]
-    private int hp;
-    [Export]
-    public Direction direction;
-    [Export]
-    private int attackRange;
-    [Export]
-    public int moveSpeed;
-    [Export]
-    private CharType charType;
-    [Export]
-    private int damage;
-    [Export]
-    private int attackPerSecond;
-
-    private Sprite sprite;
-    private Sprite selectedSprite;
+    [Export] public Texture texture;
+    [Export] private int hp;
+    [Export] public Direction direction;
+    [Export] private int attackRange;
+    [Export] public int moveSpeed;
+    [Export] private CharType charType;
+    [Export] private int damage;
+    [Export] private int attackPerSecond;
+    [Node("./Sprite")] private Sprite sprite;
+    [Node("./Selected")] private Sprite selectedSprite;
+    [Node("./HP")] private ProgressBar progressBar;
     public bool selected;
-    private ProgressBar progressBar;
     private Label label;
     private CharStatus charStatus;
     private Vector2 initialPosition;
@@ -35,18 +26,19 @@ public class Char : Area2D
     private HashSet<Char> targets;
     private const int BoundingBoxIndex = 1;
     private const int RespawnTime = 5;
-    private AnimationPlayer damageAnimation;
-    private Label damageAnimationLabel;
+    private PackedScene damageAnimation = (PackedScene)GD.Load("res://Damage.tscn");
 
     public int Hp
     {
         get => hp;
         set
         {
-            if (value < hp && !damageAnimation.IsPlaying())
+            if (value < hp)
             {
-                damageAnimationLabel.Text = (value - hp).ToString();
-                damageAnimation.Play("Damage");
+                Damage dmg = (Damage)damageAnimation.Instance();
+                dmg.SetPosition(new Vector2(0, -50));
+                AddChild(dmg);
+                dmg.Play((value - hp).ToString());
             }
             hp = value;
         }
@@ -54,11 +46,7 @@ public class Char : Area2D
 
     public override void _Ready()
     {
-        sprite = (Sprite)GetNode("./Sprite");
-        selectedSprite = (Sprite)GetNode("./Selected");
-        progressBar = (ProgressBar)GetNode("./HP");
-        damageAnimation = (AnimationPlayer)GetNode("./DamageAnimation");
-        damageAnimationLabel = (Label)GetNode("./Damage");
+        this.WireNodes();
         initialPosition = GetGlobalPosition();
         timeSinceLastDeath = 5;
         initialHp = Hp;
@@ -253,38 +241,4 @@ public class Char : Area2D
         progressBar.SetValue((float)100 * Hp / initialHp);
     }
 
-}
-
-public static class Extensions
-{
-    public static CharStatus ToCharStatus(this CharType charType)
-    {
-        switch (charType)
-        {
-            case CharType.Hero:
-                return CharStatus.AttackHero;
-            case CharType.Creep:
-                return CharStatus.AttackCreep;
-            case CharType.Tower:
-                return CharStatus.AttackTower;
-            default:
-                return CharStatus.Move;
-        }
-    }
-
-    // Smaller means higher priority
-    public static int AttackOrder(this CharType charType)
-    {
-        switch (charType)
-        {
-            case CharType.Hero:
-                return 0;
-            case CharType.Creep:
-                return 1;
-            case CharType.Tower:
-                return 2;
-            default:
-                return 999;
-        }
-    }
 }
