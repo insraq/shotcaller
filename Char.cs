@@ -14,7 +14,7 @@ public class Char : Area2D
     [Export] private int attackPerSecond;
     [Node("./Sprite")] private Sprite sprite;
     [Node("./Selected")] private Sprite selectedSprite;
-    [Node("./HP")] private ProgressBar progressBar;
+    [Node("./HP")] private readonly ProgressBar progressBar;
     public bool selected;
     private Label label;
     private CharStatus charStatus;
@@ -26,7 +26,7 @@ public class Char : Area2D
     private HashSet<Char> targets;
     private const int BoundingBoxIndex = 1;
     private const int RespawnTime = 5;
-    private PackedScene damageAnimation = (PackedScene)GD.Load("res://Damage.tscn");
+    private readonly PackedScene damageAnimation = (PackedScene)GD.Load("res://Damage.tscn");
 
     public int Hp
     {
@@ -99,7 +99,7 @@ public class Char : Area2D
         var sorted = targets
             .OfType<Char>()
             .Where(c => c.direction != direction && c.Hp > 0)
-            .OrderBy(c => c.charType.AttackOrder())
+            .OrderBy(c => c.GetGlobalPosition().DistanceTo(GetGlobalPosition()))
             .ThenBy(c => c.Hp)
             .ToList();
 
