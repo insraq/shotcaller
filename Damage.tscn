@@ -19,7 +19,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+"values": [ Color( 0.839844, 0.134506, 0.134506, 1 ), Color( 0.839216, 0.133333, 0.133333, 0 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("DamageLabel:rect_position")
@@ -42,7 +42,7 @@ use_filter = false
 font_data = ExtResource( 2 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
-[node name="Damage" type="Node2D"]
+[node name="Damage" type="Node2D" index="0"]
 
 position = Vector2( 0, -50 )
 script = ExtResource( 1 )
@@ -75,7 +75,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 custom_fonts/font = SubResource( 2 )
-custom_colors/font_color = Color( 1, 1, 1, 0 )
+custom_colors/font_color = Color( 0, 0, 0, 0 )
 text = "-15"
 align = 1
 percent_visible = 1.0

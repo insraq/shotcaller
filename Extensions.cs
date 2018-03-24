@@ -1,4 +1,6 @@
 ﻿using Godot;
+using System;
+using System.Reflection;
 
 public static class Extensions
 {
@@ -35,13 +37,24 @@ public static class Extensions
 
     public static void WireNodes(this Node node)
     {
-        System.Reflection.FieldInfo[] info = node.GetType().GetFields(System.Reflection.BindingFlags.DeclaredOnly | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        FieldInfo[] info = node
+            .GetType()
+            .GetFields(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         foreach (var f in info)
         {
-            NodeAttribute attr = (NodeAttribute)System.Attribute.GetCustomAttribute(f, typeof(NodeAttribute));
+            NodeAttribute attr = (NodeAttribute)Attribute.GetCustomAttribute(f, typeof(NodeAttribute));
             if (attr != null)
             {
-                f.SetValue(node, node.GetNode(attr.nodePath));
+                Node nodeInstnace = node.GetNode(attr.nodePath);
+                if (nodeInstnace == null)
+                {
+                    throw new NullReferenceException($"Cannot find Node for NodePath '{attr.nodePath}'");
+                }
+                if (f.FieldType != nodeInstnace.GetType())
+                {
+                    throw new InvalidCastException($"For NodePath '{attr.nodePath}', expect Type '{f.FieldType}', but get '{nodeInstnace.GetType()}'");
+                }
+                f.SetValue(node, nodeInstnace);
             }
         }
     }

@@ -55,6 +55,7 @@
     <Compile Include="CharType.cs" />
     <Compile Include="Damage.cs" />
     <Compile Include="Direction.cs" />
+    <Compile Include="HPBar.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NodeAttribute.cs" />

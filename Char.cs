@@ -14,7 +14,7 @@ public class Char : Area2D
     [Export] private int attackPerSecond;
     [Node("./Sprite")] private Sprite sprite;
     [Node("./Selected")] private Sprite selectedSprite;
-    [Node("./HP")] private readonly ProgressBar progressBar;
+    [Node("./HP")] private readonly HPBar progressBar;
     [Node("./AttackRange")] private readonly CollisionShape2D attackRangeCollider;
     public bool selected;
     private Label label;
@@ -128,7 +128,10 @@ public class Char : Area2D
                 case CharType.Creep:
                     return;
                 case CharType.Tower:
-                    var selections = GetTree().GetNodesInGroup("HeroSelection").OfType<Char>().Where(c => c.selected);
+                    var selections = GetTree()
+                        .GetNodesInGroup("HeroSelection")
+                        .OfType<Char>()
+                        .Where(c => c.selected);
                     if (selections.Count() == 1)
                     {
                         Char currentSelected = selections.First();
@@ -230,7 +233,8 @@ public class Char : Area2D
 
     private void UpdateView()
     {
-        progressBar.SetValue((float)100 * Hp / initialHp);
+        var percent = 100f * Hp / initialHp;
+        progressBar.SetProgress(percent);
     }
 
 }
