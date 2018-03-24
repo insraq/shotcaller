@@ -15,6 +15,7 @@ public class Char : Area2D
     [Node("./Sprite")] private Sprite sprite;
     [Node("./Selected")] private Sprite selectedSprite;
     [Node("./HP")] private readonly ProgressBar progressBar;
+    [Node("./AttackRange")] private readonly CollisionShape2D attackRangeCollider;
     public bool selected;
     private Label label;
     private CharStatus charStatus;
@@ -60,7 +61,7 @@ public class Char : Area2D
         if (attackRange == 0)
         {
             GD.Print($"Please set attackRange for {GetName()}");
-            ((CircleShape2D)((CollisionShape2D)GetNode("./AttackRange")).Shape).Radius = attackRange;
+            ((CircleShape2D)attackRangeCollider.Shape).Radius = attackRange;
         }
         if (moveSpeed == 0 && charType != CharType.Tower)
         {
