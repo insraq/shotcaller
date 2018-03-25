@@ -25,6 +25,7 @@ public class Char : Area2D
     private float timeSinceLastDeath;
     private Char attackTarget;
     private HashSet<Char> targets;
+    private int level;
     private const int BoundingBoxIndex = 1;
     private const int RespawnTime = 5;
     private readonly PackedScene damageAnimation = (PackedScene)GD.Load("res://Damage.tscn");
@@ -51,6 +52,7 @@ public class Char : Area2D
         initialPosition = GetGlobalPosition();
         timeSinceLastDeath = 5;
         initialHp = Hp;
+        level = 1;
         targets = new HashSet<Char>();
 
         if (texture != null)
