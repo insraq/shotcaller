@@ -210,7 +210,7 @@ public class Char : Area2D
                 {
                     return;
                 }
-                attackTarget.Hp -= damage;
+                attackTarget.Hp -= (int)new System.Random().FloatRange(0.8f * damage, 1.2f * damage);
                 timeSinceLastAttack = 0;
                 charStatus = attackTarget.charType.ToCharStatus();
                 // When attack, skip moving

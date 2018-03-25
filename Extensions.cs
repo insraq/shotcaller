@@ -58,4 +58,9 @@ public static class Extensions
             }
         }
     }
+
+    public static float FloatRange(this Random random, float min = 0.0f, float max = 1.0f)
+    {
+        return (float)(random.NextDouble() * (max - min) + min);
+    }
 }

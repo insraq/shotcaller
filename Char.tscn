@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Char.cs" type="Script" id=1]
 [ext_resource path="res://Images/buffalo.png" type="Texture" id=2]
 [ext_resource path="res://HPBar.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Fonts/OldSansBlack.ttf" type="DynamicFontData" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
 
@@ -14,7 +15,23 @@ radius = 80.0
 custom_solver_bias = 0.0
 radius = 50.0
 
-[node name="Char" type="Area2D"]
+[sub_resource type="DynamicFont" id=3]
+
+size = 11
+use_mipmaps = false
+use_filter = false
+font_data = ExtResource( 4 )
+_sections_unfolded = [ "Font", "Settings" ]
+
+[sub_resource type="DynamicFont" id=4]
+
+size = 14
+use_mipmaps = false
+use_filter = false
+font_data = ExtResource( 4 )
+_sections_unfolded = [ "Font", "Settings" ]
+
+[node name="Char" type="Area2D" index="0"]
 
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
@@ -57,6 +74,89 @@ texture = ExtResource( 2 )
 _sections_unfolded = [ "Material", "Transform", "Visibility" ]
 
 [node name="HP" parent="." index="4" instance=ExtResource( 3 )]
+
+margin_top = 36.0
+margin_right = 32.0
+margin_bottom = 48.0
+
+[node name="HPLabel" type="Label" parent="." index="5"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -28.0
+margin_top = 35.0
+margin_right = 12.0
+margin_bottom = 50.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = SubResource( 3 )
+text = "HP"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "custom_fonts" ]
+
+[node name="Level" type="Node2D" parent="." index="6"]
+
+editor/display_folded = true
+position = Vector2( 0, 11 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="LevelLabelShadow" type="Label" parent="Level" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -19.0
+margin_top = 11.0
+margin_right = 21.0
+margin_bottom = 28.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = SubResource( 4 )
+custom_colors/font_color = Color( 0.117188, 0.11673, 0.11673, 1 )
+text = "LVL1"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Margin", "Visibility", "custom_colors", "custom_fonts" ]
+
+[node name="LevelLabel" type="Label" parent="Level" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -20.0
+margin_top = 10.0
+margin_right = 20.0
+margin_bottom = 27.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = SubResource( 4 )
+text = "LVL1"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Margin", "custom_fonts" ]
 
 [connection signal="area_entered" from="." to="." method="OnAreaEntered"]
 
