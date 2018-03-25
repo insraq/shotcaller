@@ -16,6 +16,8 @@ public class Char : Area2D
     [Node("./Selected")] private Sprite selectedSprite;
     [Node("./HP")] private readonly HPBar progressBar;
     [Node("./AttackRange")] private readonly CollisionShape2D attackRangeCollider;
+    [Node("./Level/LevelLabelShadow")] private readonly Label levelLabelShadow;
+    [Node("./Level/LevelLabel")] private readonly Label levelLabel;
     public bool selected;
     private Label label;
     private CharStatus charStatus;
@@ -52,8 +54,8 @@ public class Char : Area2D
         initialPosition = GetGlobalPosition();
         timeSinceLastDeath = 5;
         initialHp = Hp;
-        level = 1;
         targets = new HashSet<Char>();
+        SetLevel(1);
 
         if (texture != null)
         {
@@ -77,6 +79,13 @@ public class Char : Area2D
         {
             GD.Print($"Please set attackPerSecond for {GetName()}");
         }
+    }
+
+    private void SetLevel(int l)
+    {
+        level = l;
+        levelLabel.SetText($"LVL{l}");
+        levelLabelShadow.SetText($"LVL{l}");
     }
 
     private void OnAreaEntered(Object area)
