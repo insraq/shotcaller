@@ -22,15 +22,16 @@ public class Char : Area2D
     private Label label;
     private CharStatus charStatus;
     private Vector2 initialPosition;
-    private int initialHp;
+    private int fullHp;
     private float timeSinceLastAttack;
-    private float timeSinceLastDeath;
+    private float timeSinceLastDeath = 5;
     private Char attackTarget;
     private HashSet<Char> targets;
     private int level;
     private const int BoundingBoxIndex = 1;
     private const int RespawnTime = 5;
     private readonly PackedScene damageAnimation = (PackedScene)GD.Load("res://Damage.tscn");
+    private int accumulatedDamage = 0;
 
     public int Hp
     {
@@ -52,10 +53,18 @@ public class Char : Area2D
     {
         this.WireNodes();
         initialPosition = GetGlobalPosition();
-        timeSinceLastDeath = 5;
-        initialHp = Hp;
+        fullHp = Hp;
         targets = new HashSet<Char>();
-        SetLevel(1);
+
+        if (charType == CharType.Hero)
+        {
+            SetLevel(1);
+        }
+        else
+        {
+            levelLabel.SetVisible(false);
+            levelLabelShadow.SetVisible(false);
+        }
 
         if (texture != null)
         {
@@ -149,7 +158,7 @@ public class Char : Area2D
                         if (currentSelected.direction == direction)
                         {
                             currentSelected.timeSinceLastDeath = 0;
-                            currentSelected.Hp = currentSelected.initialHp;
+                            currentSelected.Hp = currentSelected.fullHp;
                             currentSelected.Unselect();
                             currentSelected.SetGlobalPosition(GetGlobalPosition());
                         }
@@ -187,7 +196,7 @@ public class Char : Area2D
             {
                 // Respawn
                 timeSinceLastDeath = 0;
-                Hp = initialHp;
+                Hp = fullHp;
                 Unselect();
                 SetGlobalPosition(initialPosition);
                 return;
@@ -221,7 +230,16 @@ public class Char : Area2D
                 {
                     return;
                 }
-                attackTarget.Hp -= (int)new System.Random().FloatRange(0.8f * damage, 1.2f * damage);
+                int randomizedDamage = (int)new System.Random().FloatRange(0.8f * damage, 1.2f * damage);
+                attackTarget.Hp -= randomizedDamage;
+                accumulatedDamage += randomizedDamage;
+                if (accumulatedDamage / fullHp > level)
+                {
+                    SetLevel(accumulatedDamage / fullHp);
+                    fullHp = (int)(fullHp * 1.1f);
+                    hp = (int)(hp * 1.1f);
+                    damage = (int)(damage * 1.1f);
+                }
                 timeSinceLastAttack = 0;
                 charStatus = attackTarget.charType.ToCharStatus();
                 // When attack, skip moving
@@ -244,7 +262,7 @@ public class Char : Area2D
 
     private void UpdateView()
     {
-        var percent = 100f * Hp / initialHp;
+        var percent = 100f * Hp / fullHp;
         progressBar.SetProgress(percent);
     }
 

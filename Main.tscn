@@ -4,15 +4,15 @@
 [ext_resource path="res://Images/Scene.png" type="Texture" id=2]
 [ext_resource path="res://Tower.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Images/foliageTree_04.png" type="Texture" id=4]
-[ext_resource path="res://Char.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Images/pig.png" type="Texture" id=6]
-[ext_resource path="res://Images/panda.png" type="Texture" id=7]
-[ext_resource path="res://Images/parrot.png" type="Texture" id=8]
-[ext_resource path="res://Images/narwhal.png" type="Texture" id=9]
-[ext_resource path="res://Images/owl.png" type="Texture" id=10]
-[ext_resource path="res://CreepSpawner.tscn" type="PackedScene" id=11]
-[ext_resource path="res://Images/chick.png" type="Texture" id=12]
-[ext_resource path="res://Images/hippo.png" type="Texture" id=13]
+[ext_resource path="res://CreepSpawner.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Images/chick.png" type="Texture" id=6]
+[ext_resource path="res://Images/hippo.png" type="Texture" id=7]
+[ext_resource path="res://Char.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Images/pig.png" type="Texture" id=9]
+[ext_resource path="res://Images/panda.png" type="Texture" id=10]
+[ext_resource path="res://Images/parrot.png" type="Texture" id=11]
+[ext_resource path="res://Images/narwhal.png" type="Texture" id=12]
+[ext_resource path="res://Images/owl.png" type="Texture" id=13]
 
 [node name="Scene" type="Node2D" index="0"]
 
@@ -58,13 +58,50 @@ texture = ExtResource( 4 )
 
 direction = 1
 
-[node name="Heros" type="Node2D" parent="." index="2"]
+[node name="Creeps" type="Node2D" parent="." index="2"]
+
+editor/display_folded = true
+
+[node name="CreepSpawner" parent="Creeps" index="0" instance=ExtResource( 5 )]
+
+position = Vector2( 96, 64 )
+direction = 1
+texture = ExtResource( 6 )
+
+[node name="CreepSpawner3" parent="Creeps" index="1" instance=ExtResource( 5 )]
+
+position = Vector2( 96, 288 )
+direction = 1
+texture = ExtResource( 6 )
+
+[node name="CreepSpawner4" parent="Creeps" index="2" instance=ExtResource( 5 )]
+
+position = Vector2( 96, 512 )
+direction = 1
+texture = ExtResource( 6 )
+
+[node name="CreepSpawner2" parent="Creeps" index="3" instance=ExtResource( 5 )]
+
+position = Vector2( 928, 64 )
+texture = ExtResource( 7 )
+
+[node name="CreepSpawner5" parent="Creeps" index="4" instance=ExtResource( 5 )]
+
+position = Vector2( 928, 288 )
+texture = ExtResource( 7 )
+
+[node name="CreepSpawner6" parent="Creeps" index="5" instance=ExtResource( 5 )]
+
+position = Vector2( 928, 512 )
+texture = ExtResource( 7 )
+
+[node name="Heros" type="Node2D" parent="." index="3"]
 
 editor/display_folded = true
 
 [node name="Char" parent="Heros" index="0" groups=[
 "HeroSelection",
-] instance=ExtResource( 5 )]
+] instance=ExtResource( 8 )]
 
 position = Vector2( 96, 64 )
 hp = 1200
@@ -75,10 +112,10 @@ attackPerSecond = 2
 
 [node name="Char2" parent="Heros" index="1" groups=[
 "HeroSelection",
-] instance=ExtResource( 5 )]
+] instance=ExtResource( 8 )]
 
 position = Vector2( 96, 512 )
-texture = ExtResource( 6 )
+texture = ExtResource( 9 )
 hp = 1200
 direction = 1
 attackRange = 70
@@ -87,11 +124,11 @@ attackPerSecond = 4
 
 [node name="Char3" parent="Heros" index="2" groups=[
 "HeroSelection",
-] instance=ExtResource( 5 )]
+] instance=ExtResource( 8 )]
 
 position = Vector2( 96, 288 )
 _sections_unfolded = [ "Animation", "Collision", "Material", "Offset", "Region", "Transform", "Visibility", "Z Index" ]
-texture = ExtResource( 7 )
+texture = ExtResource( 10 )
 hp = 1500
 direction = 1
 attackRange = 80
@@ -100,10 +137,10 @@ attackPerSecond = 5
 
 [node name="Char4" parent="Heros" index="3" groups=[
 "HeroSelection",
-] instance=ExtResource( 5 )]
+] instance=ExtResource( 8 )]
 
 position = Vector2( 928, 64 )
-texture = ExtResource( 8 )
+texture = ExtResource( 11 )
 hp = 900
 attackRange = 80
 moveSpeed = 45
@@ -112,10 +149,10 @@ attackPerSecond = 1
 
 [node name="Char5" parent="Heros" index="4" groups=[
 "HeroSelection",
-] instance=ExtResource( 5 )]
+] instance=ExtResource( 8 )]
 
 position = Vector2( 928, 288 )
-texture = ExtResource( 9 )
+texture = ExtResource( 12 )
 hp = 1100
 attackRange = 100
 moveSpeed = 55
@@ -124,51 +161,14 @@ attackPerSecond = 2
 
 [node name="Char6" parent="Heros" index="5" groups=[
 "HeroSelection",
-] instance=ExtResource( 5 )]
+] instance=ExtResource( 8 )]
 
 position = Vector2( 928, 512 )
-texture = ExtResource( 10 )
+texture = ExtResource( 13 )
 hp = 1000
 attackRange = 100
 moveSpeed = 65
 damage = 70
 attackPerSecond = 2
-
-[node name="Creeps" type="Node2D" parent="." index="3"]
-
-editor/display_folded = true
-
-[node name="CreepSpawner" parent="Creeps" index="0" instance=ExtResource( 11 )]
-
-position = Vector2( 96, 64 )
-direction = 1
-texture = ExtResource( 12 )
-
-[node name="CreepSpawner3" parent="Creeps" index="1" instance=ExtResource( 11 )]
-
-position = Vector2( 96, 288 )
-direction = 1
-texture = ExtResource( 12 )
-
-[node name="CreepSpawner4" parent="Creeps" index="2" instance=ExtResource( 11 )]
-
-position = Vector2( 96, 512 )
-direction = 1
-texture = ExtResource( 12 )
-
-[node name="CreepSpawner2" parent="Creeps" index="3" instance=ExtResource( 11 )]
-
-position = Vector2( 928, 64 )
-texture = ExtResource( 13 )
-
-[node name="CreepSpawner5" parent="Creeps" index="4" instance=ExtResource( 11 )]
-
-position = Vector2( 928, 288 )
-texture = ExtResource( 13 )
-
-[node name="CreepSpawner6" parent="Creeps" index="5" instance=ExtResource( 11 )]
-
-position = Vector2( 928, 512 )
-texture = ExtResource( 13 )
 
 
